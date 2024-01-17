@@ -9,7 +9,7 @@
 *.zip
 *.tar.gz
 *.rar
-
+*.odt
 ### Gradle ###
 .gradle
 build/

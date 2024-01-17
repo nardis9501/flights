@@ -1,3 +1,12 @@
+# React + Vite
+
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+
 ## Flights
 
 [[_TOC_]]
@@ -5,7 +14,6 @@
 ---
 
 :scroll: **START**
-
 
 ### Introduction
 
@@ -19,6 +27,7 @@ Travelers use different web applications in order to search **flights** to their
 We are tasked with developing a small web application for managing **flights** information.
 
 The **flight** has:
+
 - code: unique, 6 characters long, allowed only uppercase or lowercase letters
 - capacity: a number between 1 and 200
 - departure date: the last date the plane took flight
@@ -26,11 +35,12 @@ The **flight** has:
 - img: if the flight has a photo it returns the image id for download
 
 The **user** has:
-- name: user's name
-- email: user's email 
-- password: user's password 
 
-Create a web application **(front-end only)** in your favorite language and framework to store and display flight data, integrating with the REST API of the provided server (see below how to run the server). 
+- name: user's name
+- email: user's email
+- password: user's password
+
+Create a web application **(front-end only)** in your favorite language and framework to store and display flight data, integrating with the REST API of the provided server (see below how to run the server).
 
 You can use any component library or css framework you prefer. Give it a nice and consistent look and feel.
 
@@ -59,17 +69,18 @@ Check the webpage that opens automatically in your browser for more instructions
 By default, even though some of the endpoints requires authentication, they can be accessed without it. You can start development without using the authentication. We have some requirements below, where authentication is needed, so in order to enable authenticaion on server, it can be run with adding `--auth` parameter like `flights-server --auth`. Also, to simulate async processing, the server can be run with `--async` parameter like `flights-server --async`.
 
 Please check carefully the API documentation and request parameters. The documentation is self-explanatory, but make sure you check the details. For example:
+
 ```bash
 GET /flights
 ```
-provides you option to send paging requests. 
+
+provides you option to send paging requests.
 
 For full configuration options of the server, check the webpage that opens automatically.
 
-
 ### Requirements
 
-Make sure you read all of the requirements in order to get full information of the task's expectations. Even though the list of items seams long, once you read it all, you will notice that they are related and the list just helps you to easily finish the task. Then try to complete the following features one after another in order (recommended but not necessary). 
+Make sure you read all of the requirements in order to get full information of the task's expectations. Even though the list of items seams long, once you read it all, you will notice that they are related and the list just helps you to easily finish the task. Then try to complete the following features one after another in order (recommended but not necessary).
 
 The features are grouped in different categories. The features marked as **required** are the bare minimum necessary to qualify,
 the **nice to have** increase your score and the **specials** will surely demonstrate your talent.
@@ -87,7 +98,7 @@ the **nice to have** increase your score and the **specials** will surely demons
 9. Add an error strip in case the flight creation resulted in error and allow the user to retry the creation in the form again without having to retype all the information.
 10. Add a column to display an icon in the cell that, when clicked, shows a preview of the image contained in the url in the `img` field on a dialog or nothing in the cell if the flight has no photo.
 11. On small screen display your data in cards instead of tabulated, on medium screens show the cards on portrait mode and tabulated data in landscape mode, on large screens show only the tabulated data
-12. Create your own custom component for the cards. Use scalable component spacing based on font size 
+12. Create your own custom component for the cards. Use scalable component spacing based on font size
 13. Add one unit test that check your page with mocked data from the server works.
 
 #### Nice to have features
@@ -107,7 +118,6 @@ the **nice to have** increase your score and the **specials** will surely demons
 13. Add a toolbar on top of your authenticated page showing the authenticated user with a menu with an option to logout. Make sure error pages also has this toolbar.
 14. Create dark and light mode of your app. You can put the swithcher in the toolbar.
 
-
 #### Special features
 
 1. When the security credentials are expired redirect the user to the login screen.
@@ -115,4 +125,5 @@ the **nice to have** increase your score and the **specials** will surely demons
 3. Automatically refresh the tokens when they expire without login out the user.
 
 ---
+
 :scroll: **END**
