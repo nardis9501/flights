@@ -5,6 +5,7 @@ import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
 import HomePage from "./pages/Home/HomePage";
+import FlightsPage from "./pages/Flifhts/FlightsPage";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
+            <Route path="/flights" element={<FlightsPage />} />
             {/* <Route path="blogs" element={<Blogs />} />
             <Route path="contact" element={<Contact />} />
             <Route path="*" element={<NoPage />} /> */}
