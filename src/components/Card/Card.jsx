@@ -14,7 +14,7 @@ export default function Card({ resources, parentCallback, isLoading }) {
         <Size parentCallback={handleCallback} />
         <table className="hidden lg:table w-4/5  m-auto dark:text-slate-300 text-slate-900">
           <tbody>
-            <tr className="h-10 bg-white  dark:bg-slate-500 text-amber-500">
+            <tr className="h-10 bg-white  dark:bg-slate-500 text-secondary">
               <th>Code</th>
               <th>Capacity</th>
               <th>Departure Date</th>

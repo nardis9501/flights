@@ -19,12 +19,14 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  --tw-text-opacity: 1;
+  color: rgb(203 213 225 / var(--tw-text-opacity));
   text-decoration: inherit;
 }
 
 a:hover {
   color: #535bf2;
+
 }
 
 body {
@@ -79,12 +81,4 @@ html {
 html.dark {
   --tw-text-opacity: 1;
   color: rgb(226 232 240 / var(--tw-text-opacity))
-}
-
-html.dark a:hover {
-  color: #ffffff;
-}
-
-html a:hover {
-  color: #000000;
 }
