@@ -1,15 +1,10 @@
 import { useState } from "react";
 
-export default function Size({ parentCallback }) {
-  const [size, setSize] = useState(() => {
-    const getSizeFromStorage = window.localStorage.getItem("size");
-    {
-      return getSizeFromStorage ? getSizeFromStorage : 10;
-    }
-  });
+export default function Size({ parentCallback, size }) {
+  const [newSize, setNewSize] = useState(size);
 
   const handleChange = (event) => {
-    setSize(event.target.value);
+    setNewSize(event.target.value);
     parentCallback(event.target.value);
     window.localStorage.setItem("size", event.target.value);
   };

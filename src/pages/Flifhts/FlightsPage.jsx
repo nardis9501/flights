@@ -5,7 +5,13 @@ import { useParams } from "react-router-dom";
 export default function FlightsPage(props) {
   const [loading, setLoading] = useState(false);
   const [flights, setFlights] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(() => {
+    const getCurrentPageFromStorage =
+      window.localStorage.getItem("currentPage");
+    {
+      return getCurrentPageFromStorage ? getCurrentPageFromStorage : 1;
+    }
+  });
   const [totalPage, setTotalPage] = useState(1);
   const [size, setSize] = useState(() => {
     const getSizeFromStorage = window.localStorage.getItem("size");
@@ -13,9 +19,13 @@ export default function FlightsPage(props) {
       return getSizeFromStorage ? getSizeFromStorage : 10;
     }
   });
-  const { pageId } = useParams();
-  console.log(pageId);
 
+  history.pushState(
+    { page: currentPage },
+    `title ${currentPage}`,
+    `?page=${currentPage}&size=${size}`
+  );
+  console.log(history);
   useEffect(() => {
     setLoading(true);
     fetch(
@@ -42,6 +52,10 @@ export default function FlightsPage(props) {
       });
   }, [currentPage, size]);
 
+  useEffect(() => {
+    window.localStorage.setItem("currentPage", currentPage);
+  }, [currentPage]);
+
   //console.log(flights);
   const { resources } = flights;
   console.log(totalPage);
@@ -65,6 +79,7 @@ export default function FlightsPage(props) {
             resources={resources}
             parentCallback={handleCallback}
             isLoading={loading}
+            size={size}
           />
         </div>
         <div className="fixed bottom-14 lg:bottom-3 right-0 left-0">

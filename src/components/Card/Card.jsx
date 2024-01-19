@@ -1,14 +1,14 @@
 import PaginationButton from "../Butons/paginationButton/PaginationButton";
 import Size from "../Size/Size";
 
-export default function Card({ resources, parentCallback, isLoading }) {
+export default function Card({ resources, parentCallback, isLoading, size }) {
   const handleCallback = (newSize) => {
     parentCallback(newSize);
   };
 
   return (
     <>
-      <Size parentCallback={handleCallback} />
+      <Size parentCallback={handleCallback} size={size} />
       <table className="hidden lg:table w-full m-auto dark:text-slate-300 text-slate-900">
         <tbody>
           <tr className="h-10 bg-white  dark:bg-slate-500 text-secondary">

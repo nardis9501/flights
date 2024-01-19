@@ -34,6 +34,7 @@ export default function PaginationButton({
     }
 
     setDisabled(false);
+    console.log(currentPage);
     setCurrentPage(currentPage + 1);
     if (currentPage >= totalPage - 1) {
       return setDisabledButtoPlus(true);
