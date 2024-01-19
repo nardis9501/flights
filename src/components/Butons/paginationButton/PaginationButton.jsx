@@ -32,9 +32,6 @@ export default function PaginationButton({
   };
   return (
     <>
-      {disabledButtoPlus && (
-        <div>No more flights available, return to previous page.</div>
-      )}
       <input
         onClick={handlerClick}
         disabled={disabledButtoPlus}

@@ -72,35 +72,22 @@ export default function FlightsPage(props) {
       <h2 className="py-2 dark:text-slate-400 text-white text-2xl">
         Flights page
       </h2>
-      <Card
-        resources={resources}
-        parentCallback={handleCallback}
-        isLoading={loading}
-      />
-
-      <PaginationButton
-        resources={resources}
-        currentPage={currentPage}
-        setCurrentPage={handleSetCurrentPage}
-      />
-      {/* <input
-          onClick={handlerClick}
-          disabled={disabledButtoPlus}
-          type="button"
-          value={"+"}
-          className={`${
-            disabledButtoPlus ? "opacity-55" : ""
-          } text-black place-content-center bg-white  m-2 rounded-md w-10 h-10`}
-        />
-        <input
-          onClick={handlerClick}
-          disabled={disabled}
-          type="button"
-          value={"-"}
-          className={`${
-            disabled ? "opacity-55" : ""
-          } text-black place-content-center bg-white  m-2 rounded-md w-10 h-10`}
-        /> */}
+      <div className=" h-3/4 ">
+        <div className="lg:pb-20">
+          <Card
+            resources={resources}
+            parentCallback={handleCallback}
+            isLoading={loading}
+          />
+        </div>
+        <div className="fixed bottom-14 lg:bottom-3 right-0 left-0">
+          <PaginationButton
+            resources={resources}
+            currentPage={currentPage}
+            setCurrentPage={handleSetCurrentPage}
+          />
+        </div>
+      </div>
     </>
   );
 }
