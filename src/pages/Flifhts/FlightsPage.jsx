@@ -70,7 +70,7 @@ export default function FlightsPage(props) {
   return (
     <>
       <h2 className="py-2 dark:text-slate-400 text-white text-2xl">
-        Home page
+        Flights page
       </h2>
       <Card
         resources={resources}
