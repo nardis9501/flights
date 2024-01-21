@@ -6,6 +6,7 @@ import { defaultSize } from "../../components/Size/Size.data";
 export default function FlightsPage(props) {
   const [loading, setLoading] = useState(false);
   const [flights, setFlights] = useState([]);
+  const [urlIsError, setUrlIsError] = useState(false);
   const [totalPage, setTotalPage] = useState(() => {
     const getTotalPageFromStorage = window.localStorage.getItem(
       "persistanceLocalStorageTotalPage"
@@ -66,7 +67,6 @@ export default function FlightsPage(props) {
     }
   }, []);
   useEffect(() => {
-    console.log(size);
     setLoading(true);
     history.pushState(
       { page: currentPage, size: size },
@@ -97,7 +97,7 @@ export default function FlightsPage(props) {
 
   const { resources, total } = flights;
   useEffect(() => {
-    if (resources && resources.length === 0) {
+    if (currentPage > totalPage) {
       history.pushState(
         { page: 1, size: defaultSize },
         "title",
@@ -105,16 +105,17 @@ export default function FlightsPage(props) {
       );
       setCurrentPage(1);
       setSize(defaultSize);
-      console.log("aqui");
-      return navigate("/bad-request");
+      setUrlIsError(true);
     }
-  }, []);
-  console.log(total);
+  }, [currentPage]);
+
+  if (urlIsError) {
+    return navigate("/bad-request");
+  }
+
   const handleCallback = (newSize) => {
-    console.log(newSize);
     setSize(newSize);
   };
-  console.log(size);
 
   const handleSetCurrentPage = (currentPage) => {
     setCurrentPage(currentPage);
