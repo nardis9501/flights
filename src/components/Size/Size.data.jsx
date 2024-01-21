@@ -1,6 +1,7 @@
-export const sizes = [
+export const defaultSize = 10;
+export const sizesArray = [
   { size: 5, label: "5" },
-  { size: 10, label: "default" },
+  { size: defaultSize, label: "default" },
   { size: 15, label: "15" },
   { size: 20, label: "20" },
   { size: 25, label: "25" },
