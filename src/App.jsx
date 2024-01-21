@@ -6,6 +6,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
 import HomePage from "./pages/Home/HomePage";
 import FlightsPage from "./pages/Flifhts/FlightsPage";
+// import NotFound from "./pages/NotFound/NotFound";
+import BadRequestPage from "./pages/BadRequestPage/BadRequestPage";
 
 function App() {
   return (
@@ -14,10 +16,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<HomePage />} />
-            <Route path="/flights" element={<FlightsPage />} />
-            {/* <Route path="blogs" element={<Blogs />} />
-            <Route path="contact" element={<Contact />} />
-            <Route path="*" element={<NoPage />} /> */}
+            <Route path={"/flights"} element={<FlightsPage />} />
+            <Route path="/bad-request" element={<BadRequestPage />} />
+            {/* <Route path="*" component={<NotFound />} /> */}
           </Route>
         </Routes>
       </BrowserRouter>

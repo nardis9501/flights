@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
 import Card from "../../components/Card/Card";
 import PaginationButton from "../../components/Butons/paginationButton/PaginationButton";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { defaultSize } from "../../components/Size/Size.data";
 export default function FlightsPage(props) {
   const [loading, setLoading] = useState(false);
   const [flights, setFlights] = useState([]);
-  const [urlError, setUrlError] = useState(false);
-  const [totalPage, setTotalPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(() => {
+    const getTotalPageFromStorage = window.localStorage.getItem(
+      "persistanceLocalStorageTotalPage"
+    );
+    {
+      return getTotalPageFromStorage ? Number(getTotalPageFromStorage) : 1;
+    }
+  });
   const [currentPage, setCurrentPage] = useState(() => {
     const getCurrentPageFromStorage =
       window.localStorage.getItem("currentPage");
@@ -20,37 +27,9 @@ export default function FlightsPage(props) {
       return getSizeFromStorage ? Number(getSizeFromStorage) : 10;
     }
   });
-  const Location = useLocation();
-  const { pathname, search } = Location;
-
-  useEffect(() => {
-    if (pathname === "/flights" && search === "") {
-      console.log("es igual");
-
-      history.pushState(
-        { page: currentPage, size: size },
-        "title",
-        `?page=${currentPage}&size=${size}`
-      );
-    } else if (search.includes("?page=") && search.includes("&size=")) {
-      const regex = /(\d+)/g;
-      const name = "i_txt_7_14";
-      const queries = search.match(regex);
-
-      setCurrentPage(Number(queries[0]));
-      setSize(Number(queries[1]));
-    } else {
-      setUrlError(true);
-    }
-  }, []);
-
-  // useEffect(() => {
-  //   history.pushState(
-  //     { page: currentPage, size: size },
-  //     "title",
-  //     `?page=${currentPage}&size=${size}`
-  //   );
-  // }, [currentPage, size]);
+  const location = useLocation();
+  const { pathname, search } = location;
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.localStorage.setItem("currentPage", currentPage);
@@ -58,20 +37,44 @@ export default function FlightsPage(props) {
   useEffect(() => {
     window.localStorage.setItem("size", size);
   }, [size]);
-
   useEffect(() => {
+    window.localStorage.setItem("persistanceLocalStorageTotalPage", totalPage);
+  }, [totalPage]);
+  useEffect(() => {
+    if (pathname === "/flights" && search === "") {
+      history.pushState(
+        { page: currentPage, size: size },
+        "title",
+        `?page=${currentPage}&size=${size}`
+      );
+    } else if (search.includes("?page=") && search.includes("&size=")) {
+      const regex = /(\d+)/g;
+      const queries = search.match(regex);
+
+      if (
+        queries === null ||
+        queries.length != 2 ||
+        queries[1] == 0 ||
+        queries[0] == 0
+      ) {
+        return navigate("/bad-request");
+      }
+      setCurrentPage(Number(queries[0]));
+      setSize(Number(queries[1]));
+    } else {
+      return navigate("/bad-request");
+    }
+  }, []);
+  useEffect(() => {
+    console.log(size);
+    setLoading(true);
     history.pushState(
       { page: currentPage, size: size },
       "title",
       `?page=${currentPage}&size=${size}`
     );
 
-    setLoading(true);
-
-    fetch(
-      ` http://localhost:3000/flights?page=${currentPage}&size=${size}`
-      //    &code=${code}
-    )
+    fetch(` http://localhost:3000/flights?page=${currentPage}&size=${size}`)
       .then((response) => {
         if (!response.ok)
           throw new Error(
@@ -84,7 +87,7 @@ export default function FlightsPage(props) {
         setTotalPage(Math.ceil(data.total / size));
       })
       .catch((err) => {
-        setError(err);
+        //setError(err);
         console.log(err);
       })
       .finally(() => {
@@ -92,12 +95,26 @@ export default function FlightsPage(props) {
       });
   }, [currentPage, size]);
 
-  //console.log(flights);
-  const { resources } = flights;
+  const { resources, total } = flights;
+  useEffect(() => {
+    if (resources && resources.length === 0) {
+      history.pushState(
+        { page: 1, size: defaultSize },
+        "title",
+        `?page=${1}&size=${defaultSize}`
+      );
+      setCurrentPage(1);
+      setSize(defaultSize);
+      console.log("aqui");
+      return navigate("/bad-request");
+    }
+  }, []);
+  console.log(total);
   const handleCallback = (newSize) => {
     console.log(newSize);
     setSize(newSize);
   };
+  console.log(size);
 
   const handleSetCurrentPage = (currentPage) => {
     setCurrentPage(currentPage);
@@ -125,23 +142,6 @@ export default function FlightsPage(props) {
           />
         </div>
       </div>
-
-      {urlError && (
-        <div className="z-20 grid place-content-center absolute top-0 right-0 w-full h-screen bg-black/80">
-          <div className="grid gap-4 w-64 h-60 rounded-lg p-2 place-content-center border-solid border-2 border-white">
-            <p>
-              Please enter a correct pattern in the url for your query. <br />{" "}
-              Some data is shown by default{" "}
-            </p>
-            <button
-              className="w-16 h-16 m-auto"
-              onClick={() => setUrlError(false)}
-            >
-              ✕
-            </button>
-          </div>
-        </div>
-      )}
     </>
   );
 }
