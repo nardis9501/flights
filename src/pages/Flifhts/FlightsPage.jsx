@@ -3,6 +3,7 @@ import Card from "../../components/Card/Card";
 import PaginationButton from "../../components/Butons/paginationButton/PaginationButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import { defaultSize } from "../../components/Size/Size.data";
+import Size from "../../components/Size/Size";
 export default function FlightsPage(props) {
   const [loading, setLoading] = useState(false);
   const [flights, setFlights] = useState([]);
@@ -127,12 +128,8 @@ export default function FlightsPage(props) {
       </h2>
       <div className=" h-3/4 ">
         <div className="lg:pb-20">
-          <Card
-            resources={resources}
-            parentCallback={handleCallback}
-            isLoading={loading}
-            size={size}
-          />
+          <Size parentCallback={handleCallback} size={size} />
+          <Card resources={resources} isLoading={loading} size={size} />
         </div>
         <div className="fixed bottom-14 lg:bottom-3 right-0 left-0">
           <PaginationButton
