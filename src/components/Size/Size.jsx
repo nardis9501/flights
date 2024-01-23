@@ -17,10 +17,10 @@ export default function Size({ parentCallback, size }) {
   return (
     <>
       <div className="">
-        <form className="m-auto md:flex lg:w-4/5 md:items-center md:place-content-center lg:place-content-end mb-6">
+        <form className="m-auto md:flex  md:items-center md:place-content-center">
           <label
             htmlFor="demo-controlled-open-select"
-            className="block mb-2  text-sm font-medium text-gray-900 dark:text-white"
+            className="hidden md:block mb-2  text-sm font-medium text-gray-900 dark:text-white"
           >
             Change size
           </label>
@@ -29,7 +29,7 @@ export default function Size({ parentCallback, size }) {
             id="demo-controlled-open-select"
             value={size}
             onChange={handleChange}
-            className="bg-gray-50 border border-gray-300 text-gray-900 mb-6 md:mb-0 md:ml-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full md:w-32 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="cursor-pointer bg-gray-50 border border-gray-300 text-gray-900  md:ml-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full md:w-32 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           >
             {!isFound && <option value={size}>{size}</option>}
             {sizesArray.map(({ size, label }) => (

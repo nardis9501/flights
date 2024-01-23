@@ -4,9 +4,13 @@ import PaginationButton from "../../components/Butons/paginationButton/Paginatio
 import { useLocation, useNavigate } from "react-router-dom";
 import { defaultSize } from "../../components/Size/Size.data";
 import Size from "../../components/Size/Size";
+import { HiMiniPlus } from "react-icons/hi2";
+import Modal from "../../components/Modal/Modal";
+
 export default function FlightsPage(props) {
   const [loading, setLoading] = useState(false);
   const [flights, setFlights] = useState([]);
+  const [modal, setModal] = useState(false);
   const [urlIsError, setUrlIsError] = useState(false);
   const [totalPage, setTotalPage] = useState(() => {
     const getTotalPageFromStorage = window.localStorage.getItem(
@@ -128,7 +132,15 @@ export default function FlightsPage(props) {
       </h2>
       <div className=" h-3/4 ">
         <div className="lg:pb-20">
-          <Size parentCallback={handleCallback} size={size} />
+          <div className="flex flex-row items-center place-content-end mb-6">
+            <Size parentCallback={handleCallback} size={size} />
+            <div
+              onClick={() => setModal(true)}
+              className="cursor-pointer md:ml-4 text-secondary"
+            >
+              {<HiMiniPlus size={35} />}
+            </div>
+          </div>
           <Card resources={resources} isLoading={loading} size={size} />
         </div>
         <div className="fixed bottom-14 lg:bottom-3 right-0 left-0">
@@ -140,6 +152,7 @@ export default function FlightsPage(props) {
           />
         </div>
       </div>
+      <Modal isModal={modal} parentCallback={() => setModal(false)} />
     </>
   );
 }
