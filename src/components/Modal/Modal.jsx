@@ -141,13 +141,13 @@ export default function Modal({ isModal, parentCallback }) {
                   required
                 />
                 {codeError && (
-                  <p className="max-w-64 text-secondary">
+                  <p className="m-auto max-w-64 text-secondary">
                     The code must be unique, of 6 upper or lower case
                     characters.
                   </p>
                 )}
                 {!availableCode && (
-                  <p className=" text-secondary">Code unavailable</p>
+                  <p className="m-auto  text-secondary">Code unavailable</p>
                 )}
               </div>
 
@@ -202,7 +202,9 @@ export default function Modal({ isModal, parentCallback }) {
                   accept="image/png, .jpeg, .jpg, image/gif"
                 />
                 {photoError && (
-                  <p className="max-w-80 text-secondary">Invalide file</p>
+                  <p className="m-auto max-w-80 text-secondary">
+                    Invalide file
+                  </p>
                 )}
               </div>
 
