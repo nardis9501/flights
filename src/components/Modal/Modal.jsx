@@ -9,6 +9,7 @@ export default function Modal({ isModal, parentCallback }) {
   const [departureDate, setDepartureDate] = useState();
   const [photo, setPhoto] = useState();
   const [photoError, setPhotoError] = useState(false);
+  const [objectUrl, setObjectUrl] = useState("");
   const handleSubmit = (event) => {
     // event.preventDefault();
     const values = {
@@ -71,9 +72,11 @@ export default function Modal({ isModal, parentCallback }) {
   const handleFileChange = (event) => {
     const pattern = /^image/;
     const file = event.target.files[0];
-    console.log(pattern.test(file.type));
+
     if (file && pattern.test(file.type)) {
       setPhoto(file);
+      const objectUrl = URL.createObjectURL(file);
+      setObjectUrl(objectUrl);
       return setPhotoError(false);
     }
     setPhotoError(true);
@@ -182,6 +185,14 @@ export default function Modal({ isModal, parentCallback }) {
                 <label for="departure-date " className="">
                   Photo:
                 </label>
+
+                {objectUrl && (
+                  <img
+                    className="max-h-72 border border-solid  rounded-lg my-3 mx-auto"
+                    src={objectUrl}
+                    alt=""
+                  />
+                )}
                 <input
                   onChange={handleFileChange}
                   id="departure-date"
