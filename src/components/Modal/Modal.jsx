@@ -5,30 +5,41 @@ export default function Modal({ isModal, parentCallback }) {
   const [code, setCode] = useState();
   const [codeError, setCodeError] = useState(false);
   const [availableCode, setAvailableCode] = useState(true);
-  const [capacity, setCapacity] = useState();
+  const [capacity, setCapacity] = useState("1");
   const [departureDate, setDepartureDate] = useState();
+  const [photo, setPhoto] = useState();
+  const [photoError, setPhotoError] = useState(false);
   const handleSubmit = (event) => {
-    console.log(event);
-    event.preventDefault();
+    // event.preventDefault();
     const values = {
       code: "",
       capacity: "",
       departureDate: "",
+      photo: "",
     };
     values.code = code;
     values.capacity = capacity;
     values.departureDate = departureDate;
+    values.photo = photo;
 
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(values),
-    };
-    fetch("http://localhost:3000/flights", requestOptions)
-      .then((response) => response.json())
-      .then((result) => console.log(result));
+    const requestURL = "http://localhost:3000/flights/withPhoto";
+    sendData(requestURL, values);
 
-    console.log(values);
+    async function sendData(url, data) {
+      let formData = new FormData();
+      for (const name in data) {
+        formData.append(name, data[name]);
+      }
+
+      const requestOptions = {
+        method: "POST",
+        body: formData,
+      };
+
+      const response = await fetch(url, requestOptions)
+        .then((response) => response.json())
+        .then((result) => console.log(result));
+    }
   };
 
   const handleCodeChange = (event) => {
@@ -39,7 +50,6 @@ export default function Modal({ isModal, parentCallback }) {
     if (!pattern.test(newCode)) {
       setCodeError(true);
     } else if (length === 6) {
-      console.log("se cumple 1");
       setCodeError(false);
     } else if (length === 7 && code.length === 6) {
       setCodeError(false);
@@ -49,14 +59,24 @@ export default function Modal({ isModal, parentCallback }) {
     if (length <= 6) {
       setCode(newCode);
     }
-    console.log(code);
   };
 
   const handleSelectChange = (event) => {
-    setCapacity(Number(event.target.value));
+    setCapacity(event.target.value);
   };
   const handleDepartureDateChange = (event) => {
     setDepartureDate(event.target.value);
+  };
+
+  const handleFileChange = (event) => {
+    const pattern = /^image/;
+    const file = event.target.files[0];
+    console.log(pattern.test(file.type));
+    if (file && pattern.test(file.type)) {
+      setPhoto(file);
+      return setPhotoError(false);
+    }
+    setPhotoError(true);
   };
 
   const createArray = (N) => {
@@ -66,9 +86,9 @@ export default function Modal({ isModal, parentCallback }) {
     }
     return newArr;
   };
+
   useEffect(() => {
     if (code && codeError === false) {
-      console.log(code);
       fetch(`http://localhost:3000/flights/available?code=${code}`)
         .then((response) => {
           if (!response.ok)
@@ -158,11 +178,28 @@ export default function Modal({ isModal, parentCallback }) {
                 />
               </div>
 
+              <div className="relative w-full col-span-2">
+                <label for="departure-date " className="">
+                  Photo:
+                </label>
+                <input
+                  onChange={handleFileChange}
+                  id="departure-date"
+                  type="file"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  required
+                  accept="image/png, .jpeg, .jpg, image/gif"
+                />
+                {photoError && (
+                  <p className="max-w-80 text-secondary">Invalide file</p>
+                )}
+              </div>
+
               <input
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-max  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 type="submit"
                 value="Submit"
-                disabled={codeError !== false || !availableCode}
+                disabled={codeError !== false || !availableCode || photoError}
               />
             </form>
           </div>
