@@ -130,9 +130,9 @@ export default function FlightsPage(props) {
       <h2 className="py-2 dark:text-slate-400 text-white text-2xl">
         Flights page
       </h2>
-      <div className=" h-3/4 ">
-        <div className="lg:pb-20">
-          <div className="flex flex-row items-center place-content-end mb-6">
+      <div className="h-3/4 w-full ">
+        <div className="flex flex-col md:items-center lg:pb-20">
+          <div className="flex flex-row w-full md:w-4/5 items-center place-content-end mb-6">
             <Size parentCallback={handleCallback} size={size} />
             <div
               onClick={() => setModal(true)}
