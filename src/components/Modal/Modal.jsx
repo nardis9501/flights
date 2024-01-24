@@ -147,7 +147,7 @@ export default function Modal({ isModal, parentCallback }) {
 
             <form
               onSubmit={handleSubmit}
-              className="flex flex-col py-10 h-full gap-4 items-center justify-between"
+              className="flex flex-col py-2 h-full gap-4 items-center justify-between"
               action=""
             >
               <div className="relative w-full col-span-2">
@@ -211,7 +211,7 @@ export default function Modal({ isModal, parentCallback }) {
 
                 {objectUrl && (
                   <img
-                    className="max-h-72 border border-solid  rounded-lg my-3 mx-auto"
+                    className="max-h-52 border border-solid  rounded-lg my-3 mx-auto"
                     src={objectUrl}
                     alt=""
                   />
