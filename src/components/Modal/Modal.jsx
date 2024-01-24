@@ -1,17 +1,21 @@
 import { ImCross } from "react-icons/im";
 import { useEffect, useState } from "react";
+import Spinner from "../Spinner/spinner";
 
 export default function Modal({ isModal, parentCallback }) {
-  const [code, setCode] = useState();
+  const [code, setCode] = useState(null);
   const [codeError, setCodeError] = useState(false);
   const [availableCode, setAvailableCode] = useState(true);
   const [capacity, setCapacity] = useState("1");
-  const [departureDate, setDepartureDate] = useState();
-  const [photo, setPhoto] = useState();
+  const [departureDate, setDepartureDate] = useState(null);
+  const [photo, setPhoto] = useState(null);
   const [photoError, setPhotoError] = useState(false);
   const [objectUrl, setObjectUrl] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [alert, setAlert] = useState(false);
   const handleSubmit = (event) => {
-    // event.preventDefault();
+    event.preventDefault();
+    setLoading(true);
     const values = {
       code: "",
       capacity: "",
@@ -24,6 +28,7 @@ export default function Modal({ isModal, parentCallback }) {
     values.photo = photo;
 
     const requestURL = "http://localhost:3000/flights/withPhoto";
+
     sendData(requestURL, values);
 
     async function sendData(url, data) {
@@ -37,9 +42,13 @@ export default function Modal({ isModal, parentCallback }) {
         body: formData,
       };
 
-      const response = await fetch(url, requestOptions)
-        .then((response) => response.json())
-        .then((result) => console.log(result));
+      const response = await fetch(url, requestOptions);
+      setLoading(false);
+      console.log(response);
+      if (response.ok) {
+        return parentCallback();
+      }
+      setAlert(true);
     }
   };
 
@@ -113,6 +122,20 @@ export default function Modal({ isModal, parentCallback }) {
     <>
       {isModal && (
         <div className="absolute text-slate-700 dark:text-slate-300 top-0 right-0 z-10 flex justify-center items-center bg-slate-400/80 dark:bg-black/80 h-screen w-full">
+          {loading && <Spinner />}
+          {alert && (
+            <div className="absolute z-10 grid place-content-center text-xl text-secondary bg-black/85 w-full h-full">
+              <div className="p-4 border border-solid border-secondary">
+                <span>An error has occurred, please retry</span>
+                <ImCross
+                  onClick={() => setAlert(false)}
+                  className="m-auto cursor-pointer"
+                  size={40}
+                />
+              </div>
+            </div>
+          )}
+
           <div className="flex flex-col bg-white items-center border-2 border-solid p-2   dark:bg-slate-600/85 md:shadow-md md:bg-white/85 md:w-[480px]  md:h-3/4 rounded-md  ">
             <div className="flex justify-end w-full p-2 ">
               <ImCross
