@@ -9,7 +9,7 @@ export default function Card({ resources, parentCallback, isLoading, size }) {
   const [urlObject, setUrlObject] = useState("");
   const [preview, setPreview] = useState(false);
   useEffect(() => {
-    setPreview(true);
+    //setPreview(true);
     console.log(id);
     fetch(`http://localhost:3000/flights/${id}/photo
     `)
@@ -21,7 +21,9 @@ export default function Card({ resources, parentCallback, isLoading, size }) {
         return response.blob();
       })
       .then((data) => {
-        setUrlObject(URL.createObjectURL(data));
+        // setUrlObject(URL.createObjectURL(data));
+        document.getElementById(id).src = URL.createObjectURL(data);
+        console.log(data);
       })
       .catch((err) => {
         //setError(err);
@@ -50,21 +52,31 @@ export default function Card({ resources, parentCallback, isLoading, size }) {
                   <td>{capacity}</td>
                   <td>{departureDate}</td>
                   <td>
-                    {img && status === "ready" && (
-                      <div>
-                        <TbPhotoSearch
-                          size={30}
-                          onClick={() => setId(id)}
-                          className="m-auto"
+                    <div className="grid place-content-center">
+                      {(id === urlObject && (
+                        <img
+                          id={id}
+                          className={`${
+                            id !== urlObject && "hidden"
+                          } object-cover `}
+                          src=""
+                          width={340}
+                          height={340}
+                          alt={`Image of the flight corresponding to code: ${code}`}
                         />
-                        {preview && urlObject && (
-                          <div className="flex p-1 border border-solid rounded-md bg-black/5 flex-col fixed top-1/3 left-1/3 items-end text-secondary max-h-30 max-w-64">
-                            <ImCross onClick={() => setPreview(false)} />
-                            <img src={urlObject} alt="" />
-                          </div>
-                        )}
-                      </div>
-                    )}
+                      )) ||
+                        (img && status === "ready" && (
+                          <TbPhotoSearch
+                            size={40}
+                            onClick={() => {
+                              setId(id);
+                              setPreview(false);
+                              setUrlObject(id);
+                            }}
+                            className="m-auto"
+                          />
+                        ))}
+                    </div>
                   </td>
                 </tr>
               )
