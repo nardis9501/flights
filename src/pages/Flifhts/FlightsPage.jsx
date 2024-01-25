@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import Card from "../../components/Card/Card";
+import Table from "../../components/Card/Table";
 import PaginationButton from "../../components/Butons/paginationButton/PaginationButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import { defaultSize } from "../../components/Size/Size.data";
 import Size from "../../components/Size/Size";
 import { HiMiniPlus } from "react-icons/hi2";
 import Modal from "../../components/Modal/Modal";
+import Card from "../../components/Card/Card";
 
 export default function FlightsPage(props) {
   const [loading, setLoading] = useState(false);
@@ -141,7 +142,8 @@ export default function FlightsPage(props) {
               {<HiMiniPlus size={35} />}
             </div>
           </div>
-          <Card resources={resources} isLoading={loading} size={size} />
+          <Card resources={resources} />
+          <Table resources={resources} isLoading={loading} size={size} />
         </div>
         <div className="fixed bottom-14 lg:bottom-3 right-0 left-0">
           <PaginationButton
