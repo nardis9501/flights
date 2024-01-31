@@ -13,6 +13,7 @@ export default function FlightsPage(props) {
   const [flights, setFlights] = useState([]);
   const [modal, setModal] = useState(false);
   const [urlIsError, setUrlIsError] = useState(false);
+  const [noData, setNoData] = useState(false);
   const [totalPage, setTotalPage] = useState(() => {
     const getTotalPageFromStorage = window.localStorage.getItem(
       "persistanceLocalStorageTotalPage"
@@ -90,6 +91,10 @@ export default function FlightsPage(props) {
       })
       .then((data) => {
         setFlights(data);
+        if (data.total === 0) {
+          setNoData(true);
+          return setTotalPage(1);
+        }
         setTotalPage(Math.ceil(data.total / size));
       })
       .catch((err) => {
@@ -142,6 +147,9 @@ export default function FlightsPage(props) {
               {<HiMiniPlus size={35} />}
             </div>
           </div>
+          {noData && (
+            <h2>no flight data available at the moment, try to create one</h2>
+          )}
           <Card resources={resources} />
           <Table resources={resources} isLoading={loading} size={size} />
         </div>
