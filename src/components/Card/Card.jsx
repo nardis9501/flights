@@ -13,7 +13,7 @@ export default function Card({ resources }) {
         resources.map(({ code, departureDate, capacity, img, id, status }) => (
           <div
             key={id}
-            className="lg:hidden mb-4 w-4/5 mx-auto bg-white/85 dark:bg-black/20 rounded-xl shadow-md overflow-hidden md:max-w-2xl"
+            className="lg:hidden mb-4 w-4/5 mx-auto bg-white/85 dark:bg-black/40 hover:opacity-65 rounded-xl shadow-md overflow-hidden md:max-w-2xl"
           >
             <div className="md:flex">
               <div className="md:shrink-0 md:flex  md:items-center  md:w-1/3">
