@@ -1,30 +1,11 @@
 import { useEffect, useState } from "react";
 import { TbPhotoSearch } from "react-icons/tb";
+import useFlightCard from "../../hooks/useFlightCard";
 
 export default function Card({ resources }) {
-  const [flightId, setFlightId] = useState("");
+  const [flightId, setFlightId] = useState(null);
 
-  useEffect(() => {
-    console.log(flightId);
-    fetch(`http://localhost:3000/flights/${flightId}/photo
-    `)
-      .then((response) => {
-        if (!response.ok)
-          throw new Error(
-            "An error occurred while loading flights from the API"
-          );
-        return response.blob();
-      })
-      .then((data) => {
-        // setUrlObject(URL.createObjectURL(data));
-        document.getElementById(flightId).src = URL.createObjectURL(data);
-        console.log(data);
-      })
-      .catch((err) => {
-        //setError(err);
-        console.log(err);
-      });
-  }, [flightId]);
+  useFlightCard(flightId);
 
   return (
     <>
