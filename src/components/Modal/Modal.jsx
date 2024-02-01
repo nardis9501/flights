@@ -16,39 +16,53 @@ export default function Modal({ isModal, parentCallback }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     setLoading(true);
-    const values = {
-      code: "",
-      capacity: "",
-      departureDate: "",
-      photo: "",
-    };
+    const values = {};
     values.code = code;
     values.capacity = capacity;
     values.departureDate = departureDate;
-    values.photo = photo;
 
-    const requestURL = "http://localhost:3000/flights/withPhoto";
+    if (photo) {
+      values.photo = photo;
+      const requestURL = "http://localhost:3000/flights/withPhoto";
 
-    sendData(requestURL, values);
+      sendData(requestURL, values);
 
-    async function sendData(url, data) {
-      let formData = new FormData();
-      for (const name in data) {
-        formData.append(name, data[name]);
+      async function sendData(url, data) {
+        let formData = new FormData();
+        for (const name in data) {
+          formData.append(name, data[name]);
+        }
+
+        const requestOptions = {
+          method: "POST",
+          body: formData,
+        };
+
+        const response = await fetch(url, requestOptions);
+        setLoading(false);
+        console.log(response);
+        if (response.ok) {
+          return parentCallback();
+        }
+        setAlert(true);
       }
-
+    } else {
+      values.capacity = Number(capacity);
       const requestOptions = {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
       };
 
-      const response = await fetch(url, requestOptions);
-      setLoading(false);
-      console.log(response);
-      if (response.ok) {
-        return parentCallback();
-      }
-      setAlert(true);
+      fetch("http://localhost:3000/flights", requestOptions)
+        .then((response) => {
+          if (response.ok) {
+            response.json();
+            return parentCallback();
+          }
+          setAlert(true);
+        })
+        .finally(setLoading(false));
     }
   };
 
@@ -221,7 +235,6 @@ export default function Modal({ isModal, parentCallback }) {
                   id="departure-date"
                   type="file"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required
                   accept="image/png, .jpeg, .jpg, image/gif"
                 />
                 {photoError && (
