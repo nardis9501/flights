@@ -2,13 +2,11 @@ import { useEffect, useState } from "react";
 import { TbPhotoSearch } from "react-icons/tb";
 
 export default function Card({ resources }) {
-  const [id, setId] = useState("");
-  const [preview, setPreview] = useState(true);
-  const [urlObject, setUrlObject] = useState("");
+  const [flightId, setFlightId] = useState("");
+
   useEffect(() => {
-    //setPreview(true);
-    console.log(id);
-    fetch(`http://localhost:3000/flights/${id}/photo
+    console.log(flightId);
+    fetch(`http://localhost:3000/flights/${flightId}/photo
     `)
       .then((response) => {
         if (!response.ok)
@@ -19,14 +17,14 @@ export default function Card({ resources }) {
       })
       .then((data) => {
         // setUrlObject(URL.createObjectURL(data));
-        document.getElementById(id).src = URL.createObjectURL(data);
+        document.getElementById(flightId).src = URL.createObjectURL(data);
         console.log(data);
       })
       .catch((err) => {
         //setError(err);
         console.log(err);
       });
-  }, [id]);
+  }, [flightId]);
 
   return (
     <>
@@ -38,12 +36,10 @@ export default function Card({ resources }) {
           >
             <div className="md:flex">
               <div className="md:shrink-0 md:flex  md:items-center  md:w-1/3">
-                {(id === urlObject && (
+                {(id === flightId && (
                   <img
                     id={id}
-                    className={`${
-                      id !== urlObject && "hidden"
-                    } h-48 w-full object-cover md:h-full md:w-48`}
+                    className={`h-48 w-full object-cover md:h-full md:w-48`}
                     src=""
                     alt={`Image of the flight corresponding to code: ${code}`}
                   />
@@ -52,9 +48,7 @@ export default function Card({ resources }) {
                     <TbPhotoSearch
                       size={40}
                       onClick={() => {
-                        setId(id);
-                        setPreview(false);
-                        setUrlObject(id);
+                        setFlightId(id);
                       }}
                       className="m-auto mt-4 md:mt-auto md:ml-4"
                     />
