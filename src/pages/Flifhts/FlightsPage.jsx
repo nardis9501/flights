@@ -151,7 +151,7 @@ export default function FlightsPage(props) {
             <h2>no flight data available at the moment, try to create one</h2>
           )}
           <Card resources={resources} />
-          <Table resources={resources} isLoading={loading} size={size} />
+          {/* <Table resources={resources} isLoading={loading} size={size} /> */}
         </div>
         <div className="fixed bottom-14 lg:bottom-3 right-0 left-0">
           <PaginationButton
