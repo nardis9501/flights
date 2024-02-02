@@ -7,12 +7,15 @@ import Size from "../../components/Size/Size";
 import { HiMiniPlus } from "react-icons/hi2";
 import Modal from "../../components/Modal/Modal";
 import Card from "../../components/Card/Card";
+import { LuSearchCode } from "react-icons/lu";
 
 export default function FlightsPage(props) {
   const [loading, setLoading] = useState(false);
   const [flights, setFlights] = useState([]);
+  const [data, setData] = useState([]);
   const [modal, setModal] = useState(false);
   const [urlIsError, setUrlIsError] = useState(false);
+  const [findCode, setFindCode] = useState(null);
   const [noData, setNoData] = useState(false);
   const [totalPage, setTotalPage] = useState(() => {
     const getTotalPageFromStorage = window.localStorage.getItem(
@@ -90,7 +93,8 @@ export default function FlightsPage(props) {
         return response.json();
       })
       .then((data) => {
-        setFlights(data);
+        setData(data);
+        setFlights(data.resources);
         if (data.total === 0) {
           setNoData(true);
           return setTotalPage(1);
@@ -106,7 +110,7 @@ export default function FlightsPage(props) {
       });
   }, [currentPage, size]);
 
-  const { resources, total } = flights;
+  const { resources, total } = data;
   useEffect(() => {
     if (currentPage > totalPage) {
       history.pushState(
@@ -131,6 +135,26 @@ export default function FlightsPage(props) {
   const handleSetCurrentPage = (currentPage) => {
     setCurrentPage(currentPage);
   };
+
+  const filterByCode = () => {
+    console.log(findCode);
+    const flightByCode = resources.filter(({ code }) => code === findCode);
+    console.log(flightByCode);
+    setFlights(flightByCode);
+  };
+  const handleChange = (e) => {
+    const newCode = e.target.value.trim();
+    console.log(newCode === "");
+
+    const length = newCode.length;
+    const pattern = new RegExp("^[A-Z]+$", "i");
+    if (length <= 6) {
+      setFindCode(newCode);
+    }
+    if (newCode === "") {
+      setFlights(resources);
+    }
+  };
   return (
     <>
       <h2 className="py-2 dark:text-slate-400 text-white text-2xl">
@@ -138,19 +162,36 @@ export default function FlightsPage(props) {
       </h2>
       <div className="h-3/4 w-full ">
         <div className="flex flex-col md:items-center lg:pb-20">
-          <div className="flex flex-row w-full md:w-4/5 items-center place-content-end mb-6">
-            <Size parentCallback={handleCallback} size={size} />
-            <div
-              onClick={() => setModal(true)}
-              className="cursor-pointer md:ml-4 text-secondary"
-            >
-              {<HiMiniPlus size={35} />}
+          <div className="flex flex-row w-full md:w-4/5 items-center place-content-between mb-6">
+            <div className="flex items-center">
+              <input
+                onChange={handleChange}
+                className="bg-gray-50 border border-gray-300 text-gray-900  md:ml-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full md:w-32 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                type="search"
+                name="search-by-code"
+                id="search-by-code"
+                value={findCode}
+              />
+              <LuSearchCode
+                className="cursor-pointer"
+                onClick={() => filterByCode()}
+                size={30}
+              />
+            </div>
+            <div className="flex">
+              <Size parentCallback={handleCallback} size={size} />
+              <div
+                onClick={() => setModal(true)}
+                className="cursor-pointer md:ml-4 text-secondary"
+              >
+                {<HiMiniPlus size={35} />}
+              </div>
             </div>
           </div>
           {noData && (
             <h2>no flight data available at the moment, try to create one</h2>
           )}
-          <Card resources={resources} />
+          <Card resources={flights} />
           {/* <Table resources={resources} isLoading={loading} size={size} /> */}
         </div>
         <div className="fixed bottom-14 lg:bottom-3 right-0 left-0">
